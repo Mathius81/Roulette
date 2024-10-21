@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roulette Simulator</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Roulette Simulator</h1>
+
+        <h2>Upload Sequences</h2>
+        <a href="/upload_sequences">Upload CSV or TXT Files</a>
+
+        <h2>Live Feed Input</h2>
+        <form action="/live_feed" method="POST">
+            <label for="live_number">Enter the latest number from the live roulette:</label>
+            <input type="number" id="live_number" name="live_number" min="0" max="36" required>
+            <button type="submit">Submit</button>
+        </form>
+
+        <h2>Simulate Data</h2>
+        <form action="/simulate" method="POST">
+            <label for="bet_amount">Bet Amount:</label>
+            <input type="number" id="bet_amount" name="bet_amount" min="1" value="10">
+
+            <label for="strategy">Betting Strategy:</label>
+            <select id="strategy" name="strategy">
+                <option value="martingale">Martingale</option>
+                <option value="fibonacci">Fibonacci</option>
+            </select>
+
+            <label for="spins">Number of Spins:</label>
+            <input type="number" id="spins" name="spins" min="10" value="100">
+
+            <button type="submit">Run Simulation</button>
+        </form>
+
+        <a href="/upload_sequences">Upload More Sequences</a>
+    </div>
+</body>
+</html>
