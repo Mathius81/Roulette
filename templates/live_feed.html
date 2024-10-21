@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Feed Results</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <style>
+        .number-box.red { background-color: red; }
+        .number-box.black { background-color: black; }
+        .number-box.green { background-color: green; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Live Feed Results</h1>
+
+        <h2>Numbers entered:</h2>
+        <div class="numbers-container">
+            {% for number, color in live_feed %}
+                <div class="number-box {{ color }}">
+                    {{ number }}
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if number_freq %}
+            <h2>Frequency Analysis (Last 6 Numbers):</h2>
+            <h3>Number Frequency:</h3>
+            <ul>
+                {% for number, count in number_freq.items() %}
+                    <li>{{ number }}: {{ count }} times</li>
+                {% endfor %}
+            </ul>
+
+            <h3>Color Distribution:</h3>
+            <ul>
+                {% for color, count in color_dist.items() %}
+                    <li>{{ color }}: {{ count }} times</li>
+                {% endfor %}
+            </ul>
+
+            <h3>Hot Numbers:</h3>
+            <ul>
+                {% for number, count in hot_numbers %}
+                    <li>{{ number }}: {{ count }} times</li>
+                {% endfor %}
+            </ul>
+
+            <h3>Cold Numbers:</h3>
+            <ul>
+                {% for number, count in cold_numbers %}
+                    <li>{{ number }}: {{ count }} times</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <h2>Prediction for the next number:</h2>
+        {% if prediction is not none %}
+            <p>The predicted next number is: 
+                <strong class="number-box {{ prediction_color }}">{{ prediction }}</strong>
+            </p>
+            <p>Prediction source: 
+                {% if prediction_source == "database" %}
+                    <strong>Based on similar sequences found in historical data</strong>
+                {% elif prediction_source == "combined advanced algorithms" %}
+                    <strong>Based on advanced statistical and machine learning algorithms</strong>
+                {% else %}
+                    <strong>{{ prediction_source }}</strong>
+                {% endif %}
+            </p>
+        {% else %}
+            <p>No prediction available yet.</p>
+        {% endif %}
+
+
+        <h2>Enter the next number from live feed:</h2>
+        <form action="/live_feed" method="POST">
+            <label for="live_number">Enter the latest number from the live roulette:</label>
+            <input type="number" id="live_number" name="live_number" min="0" max="36" required>
+            <button type="submit">Submit</button>
+        </form>
+
+        <a href="/">Back to Home</a>
+    </div>
+</body>
+</html>

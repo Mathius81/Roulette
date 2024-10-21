@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulation Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Simulation Results</h1>
+        
+        <h2>Final Result</h2>
+        <p>{{ result }}</p>
+        
+        <h2>Balance History</h2>
+        <canvas id="balanceChart"></canvas>
+        
+        <h2>Number Frequency Distribution</h2>
+        <ul>
+        {% for number, count in number_freq.items() %}
+            <li>Number {{ number }}: {{ count }} times</li>
+        {% endfor %}
+        </ul>
+        
+        <h2>Color Distribution</h2>
+        <ul>
+        {% for color, count in color_dist.items() %}
+            <li>{{ color.capitalize() }}: {{ count }} times</li>
+        {% endfor %}
+        </ul>
+        
+        <h2>Hot Numbers</h2>
+        <ul>
+        {% for number, count in hot_numbers %}
+            <li>Number {{ number }}: {{ count }} times</li>
+        {% endfor %}
+        </ul>
+        
+        <h2>Cold Numbers</h2>
+        <ul>
+        {% for number, count in cold_numbers %}
+            <li>Number {{ number }}: {{ count }} times</li>
+        {% endfor %}
+        </ul>
+        
+        <h2>Color Sequences (3 in a row)</h2>
+        <ul>
+        {% for sequence, count in color_sequences.items() %}
+            <li>{{ sequence }}: {{ count }} times</li>
+        {% endfor %}
+        </ul>
+        
+        <h2>Prediction for Next Spin</h2>
+        <p>The predicted number for the next spin is: {{ prediction }}</p>
+        
+        <a href="/">Back to Home</a>
+    </div>
+
+    <script>
+        var ctx = document.getElementById('balanceChart').getContext('2d');
+        var balanceChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: Array.from({length: {{ balance_history|length }}}, (_, i) => i + 1),
+                datasets: [{
+                    label: 'Balance',
+                    data: {{ balance_history }},
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
