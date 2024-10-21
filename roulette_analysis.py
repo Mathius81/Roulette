@@ -1,4 +1,3 @@
-from advanced_algorithms import advanced_prediction
 from collections import Counter
 import random
 
